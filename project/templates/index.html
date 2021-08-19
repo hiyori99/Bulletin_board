@@ -1,0 +1,29 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+    
+    <table class="table table-striped">
+        <thread>
+            <tr style="background-color: #fff;">
+                <th>Name</th>
+                <th>Post</th>
+                <th>Date</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for ppost in bbs %}
+            <tr>
+                <td>{{ ppost["name"] }}</td>
+                <td>{{ ppost["month"] }}</td>
+                <td>{{ ppost["Date"] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+{% endblock %}
+
