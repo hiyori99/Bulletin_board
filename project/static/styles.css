@@ -29,6 +29,12 @@ main .form-control
 
     /* Override Bootstrap's 100% width for form controls */
     width: auto;
+    /*height: 100px;*/
+}
+
+#postform
+{
+    height: 100px;
 }
 
 main
@@ -45,3 +51,4 @@ main img
     /* Constrain images on small screens */
     max-width: 100%;
 }
+

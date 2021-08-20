@@ -5,25 +5,33 @@
 {% endblock %}
 
 {% block main %}
-    
+    <div>
     <table class="table table-striped">
         <thread>
             <tr style="background-color: #fff;">
-                <th>Name</th>
+                <th>Username</th>
                 <th>Post</th>
                 <th>Date</th>
+                <th>Delete</th>
             </tr>
         </thread>
         <tbody>
             {% for ppost in bbs %}
             <tr>
                 <td>{{ ppost["name"] }}</td>
-                <td>{{ ppost["month"] }}</td>
-                <td>{{ ppost["Date"] }}</td>
+                <td>{{ ppost["article"] }}</td>
+                <td>{{ ppost["time"] }}</td>
+
+                <td>
+                    <a class="nav-link" href="/delete/{{ ppost['id']}}">Delete</a>
+                        <!--<li class="nav-item"><a class="nav-link" href="/delete">Delete</a></li>-->
+
+    </td>
             </tr>
             {% endfor %}
         </tbody>
 
     </table>
+    </div>
 {% endblock %}
 

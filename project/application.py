@@ -42,12 +42,7 @@ db = SQL("sqlite:///main.db")
 @login_required
 def index():
     if request.method == "POST":
-        # user_id = session["user_id"]
-        # name = request.form.get("name")
-        # month = request.form.get("month")
-        # day = request.form.get("day")
 
-        # db.execute("INSERT INTO birthdays (name, month, day) VALUES(?, ?, ?)", name, month, day)
         user_id = session["user_id"]
         bbs = db.execute("SELECT name, article, time FROM bbs WHERE user_id = ?", user_id)
         return redirect("/", bbs=bbs)
@@ -55,24 +50,24 @@ def index():
     else:
 
         # TODO: Display the entries in the database on index.html
-        people = db.execute("SELECT * FROM birthdays")
-        return render_template("index.html", people = people)
+        bbs = db.execute("SELECT * FROM bbs")
+        return render_template("index.html", bbs = bbs)
 
 
 @app.route("/ppost", methods=["GET", "POST"])
 def post():
     if (request.method == "POST"):
         post = request.form.get("post")
-        # month = request.form.get("month")
-        # day = request.form.get("day")
-        db.execute("INSERT INTO bbs (article) VALUES(?)", post)
+        user_id = session["user_id"]
+        name = db.execute("SELECT username FROM users WHERE id = ?", user_id)
+        db.execute("INSERT INTO bbs (user_id, name, article) VALUES(?, ?, ?)", user_id, name[0]['username'], post)
         return redirect("/")
 
     else:
         # people = db.execute("SELECT * FROM birthdays")
         return render_template("post.html")
 
-    
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     """Log user in"""
@@ -119,6 +114,13 @@ def logout():
     # Redirect user to login form
     return redirect("/")
 
+@app.route("/delete/<index>")
+def delete(index):
+
+    db.execute("DELETE FROM bbs WHERE id = ?", index)
+    return redirect("/")
+
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -141,10 +143,11 @@ def register():
         hash = generate_password_hash(password)
 
         try:
-            db.execute("INSERT INTO users (usname, hash) VALUES (?, ?)", username, hash)
-            return redirect("/login")
+            db.execute("INSERT INTO users (username, hash) VALUES(?, ?)", username, hash)
+            return redirect("/")
         except:
-            return apology('Username has already been registerd!')
+            return apology("You have already registered!")
+
     else:
         return render_template("register.html")
 
