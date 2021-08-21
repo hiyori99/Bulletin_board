@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Home
+    MyPage
 {% endblock %}
 
 {% block main %}
@@ -12,14 +12,18 @@
                 <th>Username</th>
                 <th>Post</th>
                 <th>Date</th>
+                <th>Delete</th>
             </tr>
         </thread>
         <tbody>
-            {% for ppost in bbs %}
+            {% for mypage in bbs %}
             <tr>
-                <td>{{ ppost["name"] }}</td>
-                <td>{{ ppost["article"] }}</td>
-                <td>{{ ppost["time"] }}</td>
+                <td>{{ mypage["name"] }}</td>
+                <td>{{ mypage["article"] }}</td>
+                <td>{{ mypage["time"] }}</td>
+                <td>
+                    <a class="nav-link" href="/delete/{{ mypage['id'] }}">Delete</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

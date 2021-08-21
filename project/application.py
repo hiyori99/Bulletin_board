@@ -41,17 +41,16 @@ db = SQL("sqlite:///main.db")
 @app.route("/", methods=["GET", "POST"])
 @login_required
 def index():
-    if request.method == "POST":
+    bbs = db.execute("SELECT * FROM bbs")
+    return render_template("index.html", bbs = bbs)
 
-        user_id = session["user_id"]
-        bbs = db.execute("SELECT name, article, time FROM bbs WHERE user_id = ?", user_id)
-        return redirect("/", bbs=bbs)
-
-    else:
-
-        # TODO: Display the entries in the database on index.html
-        bbs = db.execute("SELECT * FROM bbs")
-        return render_template("index.html", bbs = bbs)
+@app.route("/mypage", methods=["GET", "POST"])
+@login_required
+def mypage():
+    user_id = session["user_id"]
+    login_user = db.execute("SELECT username FROM users WHERE id = ?", user_id)
+    bbs = db.execute("SELECT id, name, article, time FROM bbs WHERE name = ?", login_user[0]['username'])
+    return render_template("mypage.html", bbs = bbs)
 
 
 @app.route("/ppost", methods=["GET", "POST"])
@@ -64,7 +63,6 @@ def post():
         return redirect("/")
 
     else:
-        # people = db.execute("SELECT * FROM birthdays")
         return render_template("post.html")
 
 
@@ -116,9 +114,8 @@ def logout():
 
 @app.route("/delete/<index>")
 def delete(index):
-
     db.execute("DELETE FROM bbs WHERE id = ?", index)
-    return redirect("/")
+    return redirect("/mypage")
 
 
 
