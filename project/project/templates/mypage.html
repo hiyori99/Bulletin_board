@@ -1,0 +1,34 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    MyPage
+{% endblock %}
+
+{% block main %}
+    <div>
+    <table class="table table-striped">
+        <thread>
+            <tr style="background-color: #fff;">
+                <th>Username</th>
+                <th>Post</th>
+                <th>Date</th>
+                <th>Delete</th>
+            </tr>
+        </thread>
+        <tbody>
+            {% for mypage in bbs %}
+            <tr>
+                <td>{{ mypage["name"] }}</td>
+                <td>{{ mypage["article"] }}</td>
+                <td>{{ mypage["time"] }}</td>
+                <td>
+                    <a class="nav-link" href="/delete/{{ mypage['id'] }}">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+    </div>
+{% endblock %}
+
